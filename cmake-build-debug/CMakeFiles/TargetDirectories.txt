@@ -1,0 +1,3 @@
+/Users/jie/Desktop/c:c++/pta_practice/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/jie/Desktop/c:c++/pta_practice/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/jie/Desktop/c:c++/pta_practice/cmake-build-debug/CMakeFiles/pta_practice1.dir
