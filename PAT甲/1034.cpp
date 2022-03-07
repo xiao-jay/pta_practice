@@ -1,87 +1,67 @@
-#include<iostream>
-#include<stdio.h>
-#include<algorithm>
+#include <iostream>
 #include <map>
 using namespace std;
+map<string, int> stringToInt;
+map<int, string> intToString;
+map<string, int> ans;
+int G[2010][2010], weight[2010];
+bool vis[2010];
+int stringId=1;
+int creatId(string a){
+    if(stringToInt.find(a) != stringToInt.end()){
+        return stringToInt[a];
+    }
+    intToString[stringId] = a;
+    stringToInt[a] = stringId;
+    return stringId++;
+}
 
-const int maxn = 2010;
-int per[maxn], num[maxn];
-map<string,int> names;
-queue<pair<string,sting> > que;
-string _next[maxn];
-int n,k;
-struct people{
-	string name;
-	int lenth;
-}peo[maxn];
+void dfs(int u,int &head,int &membernum,int &totalweight){
+    vis[u] = true;
+    if(weight[head] < weight[u]) head = u;
+    membernum++;
+    for(int i=1;i<stringId;i++){
+        if(G[i][u] >0 ){
+            totalweight += G[u][i];
+            G[u][i] = G[i][u] = 0;
+            if(!vis[i]){
+                dfs(i,head,membernum,totalweight);
+            }
 
-int find(int x){
-	if(per[x] != x){
-		per[x] = find(per[x]);
-	}else{
-		return x;
-	}
-} 
-
-void union(int x,int y){
-	x = find(x);
-	y = find(y);
-	if(x != y){
-		if(peo[x].lenth > peo[y].lenth){
-			per[y] = x;
-		}else{
-			per[x] = y;
-		}
-	} 
+        }
+    }
 }
 
 int main(){
-	cin>>n>>k;
-	for(int i = 1;i <= 2*n;i ++) per[i] = i;
-	string name1,name2;
-	int len,index=0;
-	for(int i=1;i<=n;i++){
-		cin >>name1>>name2>>len;
-		if(!names[name1]){
-			names[name1] = ++index;
-			peo[index].name = name1;
-			peo[index].lenth = len;
-		}else{
-			peo[names[name1]].lenth += len;
-		}
-		if(!names[name2]){
-			names[name2] = ++index;
-			peo[index].name = name2;
-			peo[index].lenth = len;  
-		}else
-			peo[names[name2]].lenth +=len;
-		que.push(make_pair(name1,name2));
-	}
-	pair<string,string> p;
-	while(!que.empty()){
-		p = que.front();que.pop();
-		union(names[p.first],names[p.second]);
-	}
-	for(int i=1;i <= index; i++){
-		int x = find(i);
-		if(per[i] != i){
-			peo[x].lenth += peo[i].lenth;
-		}
-		num[x] ++;
-	}
-	int pos = 0;
-	for(int i=1;i<=index;i++){
-		if(num[i] >2 && peo[i].lenth > k*2)
-			_next[++pos] = peo[i].name; 
-	}
-	if(pos == 0){
-		printf("0\n");
-	}else{
-		printf("%d\n",pos);
-		sort(_next+1,_next+pos+1£¬less<string>());
-		for(int i=1;i<=pos;i++){
-			cout << _next[i] << " "<<num[names]
-		}
-	}
-	
-} 
+    int m,n;
+    string a,b;
+    int time;
+    cin >>m>>n;
+
+    int cnt = 0;
+    while(m--){
+        cin >>a >>b>>time;
+        int id1 = creatId(a);
+        int id2 = creatId(b);
+        weight[id1] += time;
+        weight[id2] += time;
+        G[id1][id2] = time;
+        G[id2][id1] = time;
+    }
+
+   for(int i=1;i<stringId;i++){
+       if(vis[i] == false){
+           int head = i,membernum = 0,totalweight = 0;
+           dfs(i,head,membernum,totalweight);
+           if(totalweight > n && membernum >2){
+               ans[intToString[head]] = membernum;
+           }
+       }
+   }
+   cout << ans.size()<<endl;
+   for( auto i = ans.begin();i!= ans.end();i++){
+       if(i != ans.begin()) cout <<endl;
+       cout << i->first<<" "<<i->second;
+   }
+    return 0;
+}

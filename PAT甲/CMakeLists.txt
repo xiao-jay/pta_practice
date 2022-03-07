@@ -3,4 +3,4 @@ project(PAT)
 
 set(CMAKE_CXX_STANDARD 14 CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-add_executable(PAT 1034.cpp)
+add_executable(PAT 360面试题2.cpp)
